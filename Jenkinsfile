@@ -109,9 +109,6 @@ pipeline {
                     sh "sed -i 's/growcast:latest/growcast:${env.BUILD_ID}/g' deployment.yaml"
                     //배포 전에 deployment.yaml 파일의 이미지를 최신 빌드 ID로 교체합니다.
 
-                    sh "echo '[DEBUG] deployment.yaml after sed:'"
-                    sh "cat deployment.yaml"
-
                     //Kubernetes Engine에 배포합니다.
                     step([$class: 'KubernetesEngineBuilder',
                           projectId: env.PROJECT_ID,
@@ -120,9 +117,6 @@ pipeline {
                           manifestPattern: 'deployment.yaml',
                           credentialsId: env.CREDENTIALS_ID,
                           verifyDeployments: true])
-
-                    //배포 후 새로운 이미지를 적용하기 위해 파드 재시작 (파드 2개 이상 사용할 경우 해당 코드 삭제해도 무방)
-                    sh 'kubectl rollout restart deployment growcast-deployment'
                 }
             }
         }
