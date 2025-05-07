@@ -83,10 +83,9 @@ pipeline {
         stage("Push Docker image") {
             steps {
                 script {
-                    // Docker Hub에 이미지를 푸시합니다.
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerHub') {
-                            myapp.push("latest")
-                            myapp.push("${env.BUILD_ID}")
+                    //Docker Hub에 이미지를 푸시
+                    withDockerRegistry([credentialsId: 'dockerhub', url: 'https://index.docker.io/v1/']) {
+                        sh "docker push jjwon0407/growcast:${env.BUILD_ID}"
                     }
                 }
             }
