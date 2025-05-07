@@ -90,6 +90,7 @@ pipeline {
                             myapp.push("latest")
                             echo "Inside Docker registry block"
                             myapp.push("${env.BUILD_ID}")
+                    }
                 }
             }
         }
