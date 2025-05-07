@@ -120,6 +120,9 @@ pipeline {
                           manifestPattern: 'deployment.yaml',
                           credentialsId: env.CREDENTIALS_ID,
                           verifyDeployments: true])
+
+                    //배포 후 새로운 이미지를 적용하기 위해 파드 재시작 (파드 2개 이상 사용할 경우 해당 코드 삭제해도 무방)
+                    sh 'kubectl rollout restart deployment growcast-deployment'
                 }
             }
         }
