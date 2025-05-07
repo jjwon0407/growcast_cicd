@@ -75,7 +75,8 @@ pipeline {
             steps {
                 script {
                     //Docker 이미지를 빌드
-                    sh "docker build --no-cache -t jjwon0407/growcast:${env.BUILD_ID} ."
+                    echo "Attempting to build Docker image..."
+                    myapp = docker.build("jjwon0407/growcast:${env.BUILD_ID}", "--no-cache .")
                 }
             }
         }
@@ -85,10 +86,10 @@ pipeline {
                 script {
                     //Docker Hub에 이미지를 푸시
                     echo "Attempting to push Docker image..."
-                    withDockerRegistry([credentialsId: 'dockerhub', url: 'https://index.docker.io/v1/']) {
-                        echo "Inside Docker registry block"
-                        sh "docker push jjwon0407/growcast:${env.BUILD_ID}"
-                    }
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerHub') {
+                            myapp.push("latest")
+                            echo "Inside Docker registry block"
+                            myapp.push("${env.BUILD_ID}")
                 }
             }
         }
