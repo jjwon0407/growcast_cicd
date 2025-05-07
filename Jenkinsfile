@@ -125,8 +125,8 @@ pipeline {
 	post {
         always {
             script {
-                sh 'docker stop growcast_jenkins${BUILD_ID} || true'
-                sh 'docker rm growcast_jenkins${BUILD_ID} || true'
+                sh 'docker stop growcast_jenkins${env.BUILD_ID} || true'
+                sh 'docker rm growcast_jenkins${env.BUILD_ID} || true'
             }
             echo 'Pipeline completed.'
         }
