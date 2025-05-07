@@ -76,7 +76,12 @@ pipeline {
                 script {
                     //Docker 이미지를 빌드
                     echo "Attempting to build Docker image..."
-                    myapp = docker.build("jjwon0407/growcast:${env.BUILD_ID}", "--no-cache .")
+                    try {
+                        myapp = docker.build("jjwon0407/growcast:${env.BUILD_ID}", "--no-cache .")
+                    } catch (Exception e) {
+                        echo "Error during Docker build: ${e.getMessage()}"
+                        throw e // 예외를 다시 던져서 실패시키기
+                    }
                 }
             }
         }
