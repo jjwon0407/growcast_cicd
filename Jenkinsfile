@@ -74,8 +74,8 @@ pipeline {
         stage("Build image") {
             steps {
                 script {
-                    // Docker 이미지를 빌드합니다.
-                    myapp = docker.build("jjwon0407/growcast:${env.BUILD_ID}", "--no-cache .")
+                    //Docker 이미지를 빌드
+                    sh "docker build --no-cache -t jjwon0407/growcast:${env.BUILD_ID} ."
                 }
             }
         }
