@@ -106,10 +106,10 @@ pipeline {
 		    }
 		    steps {
                 script {
-                    sh "sed -i 's/growcast:latest/growcast:${BUILD_ID}/g' deployment.yaml"
-                    // 배포 전에 deployment.yaml 파일의 이미지를 최신 빌드 ID로 교체합니다.	
+                    sh "sed -i 's/growcast:latest/growcast:${env.BUILD_ID}/g' deployment.yaml"
+                    //배포 전에 deployment.yaml 파일의 이미지를 최신 빌드 ID로 교체합니다.	
 
-                    // Kubernetes Engine에 배포합니다.
+                    //Kubernetes Engine에 배포합니다.
                     step([$class: 'KubernetesEngineBuilder',
                           projectId: env.PROJECT_ID,
                           clusterName: env.CLUSTER_NAME,
