@@ -121,24 +121,4 @@ pipeline {
             }
         }
     }
-
-	post {
-        always {
-            script {
-                sh 'docker stop growcast_jenkins${env.BUILD_ID} || true'
-                sh 'docker rm growcast_jenkins${env.BUILD_ID} || true'
-            }
-            echo 'Pipeline completed.'
-        }
-        failure {
-            script {
-                echo "Build failed. Deleting the Docker image."
-                sh 'docker rmi $DOCKER_IMAGE || true'
-            }
-        }
-        success {
-            echo 'Pipeline succeeded!'
-        }
-    }
-
 }
