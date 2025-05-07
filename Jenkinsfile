@@ -17,7 +17,7 @@ pipeline {
         stage("Checkout code") {
             steps {
                 script {
-                    //Git 리포지토리에서 코드를 체크아웃합니다.
+                    //Git 리포지토리에서 코드를 체크아웃
                     git url: 'https://github.com/jjwon0407/growcast_cicd.git', branch: 'develop'
                 }
             }
@@ -25,14 +25,14 @@ pipeline {
         stage('Grant execute permission to gradlew') {
             steps {
                 script {
-                    sh 'chmod +x ./gradlew'  // 권한 부여
+                    sh 'chmod +x ./gradlew'  //권한 부여
                 }
             }
         }
         stage('Build JAR') {
             steps {
                 script {
-                    // credentials 환경 변수를 사용하여 application.properties 파일을 업데이트
+                    //credentials 환경 변수를 사용하여 application.properties 파일을 업데이트
                     withCredentials([string(credentialsId: 'DB_URL', variable: 'DB_URL'),
                                      string(credentialsId: 'DB_USERNAME', variable: 'DB_USERNAME'),
                                      string(credentialsId: 'DB_PASSWORD', variable: 'DB_PASSWORD'),
@@ -67,7 +67,7 @@ pipeline {
         }
         stage('Verify JAR File') {
             steps {
-                sh 'ls -l build/libs/' // backend 디렉토리 내의 JAR 파일 목록 확인
+                sh 'ls -l build/libs/' //backend 디렉토리 내의 JAR 파일 목록 확인
             }
         }
 
@@ -80,7 +80,7 @@ pipeline {
                         myapp = docker.build("jjwon0407/growcast:${env.BUILD_ID}", "--no-cache .")
                     } catch (Exception e) {
                         echo "Error during Docker build: ${e.getMessage()}"
-                        throw e // 예외를 다시 던져서 실패시키기
+                        throw e //예외를 다시 던져서 실패시키기 (아마 추후 삭제 예정?)
                     }
                 }
             }
