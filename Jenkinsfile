@@ -84,7 +84,9 @@ pipeline {
             steps {
                 script {
                     //Docker Hub에 이미지를 푸시
+                    echo "Attempting to push Docker image..."
                     withDockerRegistry([credentialsId: 'dockerhub', url: 'https://index.docker.io/v1/']) {
+                        echo "Inside Docker registry block"
                         sh "docker push jjwon0407/growcast:${env.BUILD_ID}"
                     }
                 }
