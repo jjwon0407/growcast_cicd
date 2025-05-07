@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gomin-jungdok
+  name: growcast-deployment
   labels:
-    app: gomin-jungdok
+    app: growcast
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
-      app: gomin-jungdok
+      app: growcast
   template:
     metadata:
       labels:
-        app: gomin-jungdok
+        app: growcast
     spec:
       containers:
-      - name: gomin-jungdok-container
-        image: jjwon0407/gomin_jungdok:latest
+      - name: growcast-container
+        image: jjwon0407/growcast:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 3030
@@ -24,46 +24,28 @@ spec:
         - name: DB_URL
           valueFrom:
             secretKeyRef:
-              name: gomin-jungdok-secret
+              name: growcast-secret
               key: db-url
         - name: DB_USERNAME
           valueFrom:
             secretKeyRef:
-              name: gomin-jungdok-secret
+              name: growcast-secret
               key: db-username
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: gomin-jungdok-secret
+              name: growcast-secret
               key: db-password
         - name: GCS_NAME
           valueFrom:
             secretKeyRef:
-              name: gomin-jungdok-secret
+              name: growcast-secret
               key: gcs-name
-        - name: kakao.client
-          valueFrom: 
-            secretKeyRef: 
-              name: gomin-jungdok-secret
-              key: kakao-client
-        - name: kakao.redirect-uri 
-          valueFrom:  
-            secretKeyRef:
-              name: gomin-jungdok-secret
-              key: kakao-redirect-uri
-        - name: custom.jwt.secretKey
-          valueFrom: 
-            secretKeyRef:
-              name: gomin-jungdok-secret
-              key: custom-jwt-secretKey
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /etc/secrets/gcs/gcs.json
         volumeMounts:
         - name: gcs-config-volume
           mountPath: /etc/secrets/gcs
-          readOnly: true
-        - name: firebase-config-volume
-          mountPath: /etc/secrets/firebase
           readOnly: true
         resources:
           requests:
@@ -76,22 +58,19 @@ spec:
       - name: gcs-config-volume
         secret:
           secretName: gcs-config
-      - name: firebase-config-volume
-        secret:
-          secretName: firebase-config 
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: gomin-jungdok-service
+  name: growcast-service
   labels:
-    app: gomin-jungdok
+    app: growcast
 spec:
   selector:
-    app: gomin-jungdok
+    app: growcast
   type: LoadBalancer
   ports:
   - protocol: TCP
-    port: 8080
+    port: 3030
     targetPort: 3030

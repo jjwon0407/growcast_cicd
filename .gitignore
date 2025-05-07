@@ -1,0 +1,19 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# IntelliJ
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# IDE Build output
+out/
+bin/
+
+#설정파일 무시
+src/main/resources/.env.properties
+src/main/resources/growcast-458911-f1863eb09b83.json
